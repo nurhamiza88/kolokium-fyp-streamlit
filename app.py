@@ -1,3 +1,8 @@
+import sys
+import subprocess
+
+subprocess.check_call([sys.executable, "-m", "pip", "install", "gspread", "oauth2client"])
+
 import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
