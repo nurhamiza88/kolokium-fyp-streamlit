@@ -17,7 +17,7 @@ from datetime import datetime
 # =====================
 # CONFIG
 # =====================
-SHEET_NAME = "NAMA_SHEET_BUDDY"   # ⚠️ TUKAR ikut nama Google Sheet sebenar
+SHEET_NAME = "BORANG_KOLOKIUM"
 WS_AGIHAN = "AGIHAN_JURI_POSTER"
 WS_PENILAIAN = "PENILAIAN"
 
