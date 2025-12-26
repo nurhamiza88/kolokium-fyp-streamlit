@@ -79,7 +79,7 @@ else:
 st.subheader("Maklumat Poster")
 
 try:
-    df_agihan = pd.read_csv(CSV_AGIHAN_URL)
+    df_agihan = pd.read_csv(CSV_AGIHAN JURI_URL)
     df_agihan.columns = df_agihan.columns.str.strip()
 except Exception:
     st.error("❌ Gagal tarik data AGIHAN_JURI.")
