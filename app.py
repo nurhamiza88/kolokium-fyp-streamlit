@@ -2,6 +2,26 @@ import requests
 
 FORM_URL = "https://docs.google.com/forms/d/e/1K6tBmnv7JBX_TCTIhCg3UxTKuGLbxbd5UYf4N4lFLmM/formResponse"
 
+FORM_MAPPING = {
+    "nama_juri": "entry.1101626450",
+    "kod_poster": "entry.1011436319",
+    "jenis_borang": "entry.2043825743",
+    "jumlah": "entry.2012388652",
+    "item": [
+        "entry.994184812",   # Item 1
+        "entry.1025336879",  # Item 2
+        "entry.1540256323",  # Item 3
+        "entry.90543189",    # Item 4
+        "entry.1040594050",  # Item 5
+        "entry.1209343348",  # Item 6
+        "entry.1535785034",  # Item 7
+        "entry.895520193",   # Item 8
+        "entry.964162367",   # Item 9
+        "entry.200002443"    # Item 10
+    ]
+}
+
+
 import streamlit as st
 import pandas as pd
 from datetime import datetime
