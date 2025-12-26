@@ -16,7 +16,7 @@ st.title("📋 Sistem Penilaian Juri Kolokium Projek Tahun Akhir")
 # =====================
 # URL CSV GOOGLE SHEET
 # =====================
-JURI_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlsLSz46lRS0ncB4idH-6Xn_pGWb5jXXKsZdwKygizIHDrkjbjvzB3vzD9qxV06_2FTMLGxunuZUpy/pub?gid=250804433&single=true&output=csv"
+JURI_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlsLSz46lRS0ncB4idH-6Xn_pGWb5jXXKsZdwKygizIHDrkjbjvzB3vzD9qxV06_2FTMLGxunuZUpy/pub?gid=1188865026&single=true&output=csv"
 
 # =====================
 # LOAD AGIHAN JURI
