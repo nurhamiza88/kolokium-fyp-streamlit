@@ -184,3 +184,5 @@ if st.button("📤 Submit Penilaian"):
         st.success("🎉 Penilaian berjaya dihantar ke Google Sheet!")
     else:
         st.error(f"❌ Gagal hantar data (Status: {r.status_code})")
+st.divider()
+st.caption("© 2026 | Sistem Penilaian Kolokium Projek Tahun Akhir | Dr. Nur Hamiza binti Adenan")
