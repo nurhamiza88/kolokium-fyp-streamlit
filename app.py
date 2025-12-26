@@ -185,8 +185,5 @@ if st.button("📤 Submit Penilaian"):
     else:
         st.error(f"❌ Gagal hantar data (Status: {r.status_code})")
 st.divider()
-st.caption("© 2026 | Sistem Penilaian Kolokium Projek Tahun Akhir | Dr. Nur Hamiza binti Adenan")
-st.image(
-    "Logo-Universiti-Pendidikan-Sultan-Idris-UPSI.png",
-    width=70
-)
+st.caption("© 2026 | UNIVERSITI PENDIDIKAN SULTAN IDRIS | Sistem Penilaian Kolokium Projek Tahun Akhir | Dr. Nur Hamiza binti Adenan")
+
