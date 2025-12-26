@@ -74,21 +74,36 @@ else:
 
 
 # =====================
-# MAKLUMAT POSTER
+# MAKLUMAT POSTER (IKUT AGIHAN JURI)
 # =====================
-SENARAI_KOD = [
-    "PRODUK001", "PRODUK002", "PRODUK003",
-    "PENDIDIKAN001", "PENDIDIKAN002",
-    "STATISTIKMATEMATIK001", "STATISTIKMATEMATIK002"
-]
-
 st.subheader("Maklumat Poster")
 
-kod_poster = st.selectbox(
-    "Pilih Kod Poster",
-    SENARAI_KOD,
-    key="kod_poster_select"   # ✅ FIX PENTING
+try:
+    df_agihan = pd.read_csv(CSV_AGIHAN_URL)
+    df_agihan.columns = df_agihan.columns.str.strip()
+except Exception:
+    st.error("❌ Gagal tarik data AGIHAN_JURI.")
+    st.stop()
+
+nama_juri = st.session_state.nama_juri.strip()
+
+kod_dibenarkan = (
+    df_agihan[df_agihan["Nama Juri"] == nama_juri]["Kod Poster"]
+    .dropna()
+    .unique()
+    .tolist()
 )
+
+if not kod_dibenarkan:
+    st.warning("⚠️ Tiada kod poster diagihkan kepada juri ini.")
+    st.stop()
+
+kod_poster = st.selectbox(
+    "Pilih Kod Poster (Diagihkan kepada anda)",
+    kod_dibenarkan,
+    key="kod_poster_select"
+)
+
 
 
 # =====================
