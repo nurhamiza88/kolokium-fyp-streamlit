@@ -14,37 +14,59 @@ st.set_page_config(
 st.title("📋 Sistem Penilaian Juri Kolokium Projek Tahun Akhir")
 
 # =====================
-# GOOGLE SHEET (CSV) – SENARAI JURI
+# KONFIG GOOGLE (SELAMAT)
 # =====================
-CSV_JURI_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlsLSz46lRS0ncB4idH-6Xn_pGWb5jXXKsZdwKygizIHDrkjbjvzB3vzD9qxV06_2FTMLGxunuZUpy/pub?gid=1188865026&single=true&output=csv"
 
-def get_juri_from_sheet():
-    df = pd.read_csv(CSV_JURI_URL)
-    return df["NAMA JURI"].dropna().tolist()
+# 1️⃣ CSV JURI (Publish to web → CSV)
+JURI_CSV_URL = (
+    "https://docs.google.com/spreadsheets/d/e/"
+    "2PACX-1vSlsLSz46lRS0ncB4idH-6Xn_pGWb5jXXKsZdwKygizIHDrkjbjvzB3vzD9qxV06_2FTMLGxunuZUpy"
+    "/pub?gid=1188865026&single=true&output=csv"
+)
 
-# =====================
-# GOOGLE FORM (SUBMIT)
-# =====================
-FORM_URL = "https://docs.google.com/forms/d/e/1K6tBmnv7JBX_TCTIhCg3UxTKuGLbxbd5UYf4N4lFLmM/formResponse"
+# 2️⃣ Google Form (formResponse)
+FORM_URL = (
+    "https://docs.google.com/forms/d/e/"
+    "1K6tBmnv7JBX_TCTIhCg3UxTKuGLbxbd5UYf4N4lFLmM"
+    "/formResponse"
+)
 
+# 3️⃣ FORM MAPPING (WAJIB IKUT FORM)
 FORM_MAPPING = {
     "nama_juri": "entry.1101626450",
     "kod_poster": "entry.1011436319",
     "jenis_borang": "entry.2043825743",
-    "jumlah": "entry.2012388652",
-    "item": [
-        "entry.994184812",   # Item 1
-        "entry.1025336879",  # Item 2
-        "entry.1540256323",  # Item 3
-        "entry.90543189",    # Item 4
-        "entry.1040594050",  # Item 5
-        "entry.1209343348",  # Item 6
-        "entry.1535785034",  # Item 7
-        "entry.895520193",   # Item 8
-        "entry.964162367",   # Item 9
-        "entry.200002443"    # Item 10
-    ]
+    "jumlah_markah": "entry.2012388652",
+    "item_1": "entry.994184812",
+    "item_2": "entry.1025336879",
+    "item_3": "entry.1540256323",
+    "item_4": "entry.90543189",
+    "item_5": "entry.1040594050",
+    "item_6": "entry.1209343348",
+    "item_7": "entry.1535785034",
+    "item_8": "entry.895520193",
+    "item_9": "entry.964162367",
+    "item_10": "entry.200002443",
 }
+
+# =====================
+# AMBIL SENARAI JURI (CSV)
+# =====================
+@st.cache_data
+def load_juri():
+    df = pd.read_csv(JURI_CSV_URL)
+    return df.iloc[:, 0].dropna().tolist()
+
+SENARAI_JURI = load_juri()
+
+# =====================
+# SENARAI KOD POSTER
+# =====================
+SENARAI_KOD = [
+    "PRODUK001", "PRODUK002", "PRODUK003",
+    "PENDIDIKAN001", "PENDIDIKAN002",
+    "STATISTIKMATEMATIK001", "STATISTIKMATEMATIK002"
+]
 
 # =====================
 # SESSION STATE
@@ -57,12 +79,6 @@ if "nama_juri" not in st.session_state:
 # =====================
 st.subheader("Maklumat Juri")
 
-try:
-    SENARAI_JURI = get_juri_from_sheet()
-except Exception:
-    st.error("❌ Gagal tarik senarai juri dari Google Sheet.")
-    st.stop()
-
 if st.session_state.nama_juri is None:
     nama = st.selectbox("Pilih Nama Juri", ["-- Pilih --"] + SENARAI_JURI)
     if nama != "-- Pilih --":
@@ -74,45 +90,39 @@ else:
 # =====================
 # MAKLUMAT POSTER
 # =====================
-SENARAI_KOD = [
-    "PRODUK001", "PRODUK002", "PRODUK003",
-    "PENDIDIKAN001", "PENDIDIKAN002",
-    "STATISTIKMATEMATIK001", "STATISTIKMATEMATIK002"
-]
-
 st.subheader("Maklumat Poster")
 kod_poster = st.selectbox("Pilih Kod Poster", SENARAI_KOD)
 
 # =====================
-# RUBRIK PENILAIAN
+# RUBRIK AUTOMATIK
 # =====================
 if kod_poster.startswith("PRODUK") or kod_poster.startswith("PENDIDIKAN"):
     jenis_borang = "PRODUK / PENDIDIKAN"
     soalan = [
         "Reka bentuk poster jelas dan menarik.",
-        "Isi kandungan poster lengkap merangkumi 11 aspek utama kajian.",
-        "Poster menunjukkan elemen inovatif.",
-        "Produk atau hasil kajian menunjukkan keaslian.",
-        "Produk atau hasil kajian relevan.",
-        "Produk atau instrumen kajian melalui penilaian asas.",
-        "Penyampaian adalah yakin dan bertenaga.",
-        "Kajian diterangkan secara sistematik.",
+        "Isi kandungan poster lengkap (11 aspek).",
+        "Elemen inovatif bersesuaian.",
+        "Keaslian atau penambahbaikan bermakna.",
+        "Relevan dan membantu selesaikan masalah.",
+        "Instrumen dinilai & dokumentasi sokongan.",
+        "Penyampaian yakin dan bertenaga.",
+        "Huraian kajian sistematik dan tepat.",
         "Komunikasi lancar tanpa verbiage.",
-        "Pembentang menjawab soalan dengan kritikal."
+        "Jawapan rasional, kritikal dan bernas."
     ]
 else:
     jenis_borang = "STATISTIK & MATEMATIK GUNAAN"
     soalan = [
-        "Reka bentuk poster jelas dan menyokong kefahaman kajian.",
-        "Isi kandungan poster lengkap merangkumi 10 aspek utama.",
-        "Poster menunjukkan elemen inovatif.",
-        "Kaedah matematik/statistik sesuai dan tepat.",
-        "Persembahan analisis data tepat.",
-        "Kajian menyumbang kepada body of knowledge.",
-        "Penyampaian adalah yakin dan bertenaga.",
-        "Kajian diterangkan secara sistematik.",
-        "Komunikasi lancar.",
-        "Pembentang menjawab soalan dengan kritikal."
+        "Reka bentuk poster jelas dan kemas.",
+        "Isi kandungan poster lengkap (10 aspek).",
+        "Elemen inovatif bersesuaian.",
+        "Kaedah matematik/statistik tepat.",
+        "Analisis data tepat dan relevan.",
+        "Sumbangan kepada body of knowledge.",
+        "Penyampaian yakin dan bertenaga.",
+        "Huraian kajian sistematik.",
+        "Komunikasi lancar tanpa verbiage.",
+        "Jawapan rasional dan kritikal."
     ]
 
 # =====================
@@ -144,16 +154,17 @@ if st.button("📤 Submit Penilaian"):
         FORM_MAPPING["nama_juri"]: st.session_state.nama_juri,
         FORM_MAPPING["kod_poster"]: kod_poster,
         FORM_MAPPING["jenis_borang"]: jenis_borang,
-        FORM_MAPPING["jumlah"]: jumlah,
+        FORM_MAPPING["jumlah_markah"]: jumlah,
     }
 
-    for i, skor in enumerate(markah):
-        payload[FORM_MAPPING["item"][i]] = skor
+    for i in range(10):
+        payload[FORM_MAPPING[f"item_{i+1}"]] = markah[i]
 
     r = requests.post(FORM_URL, data=payload)
 
     if r.status_code == 200:
         st.balloons()
-        st.success("🎉 Penilaian berjaya dihantar ke Google Sheet!")
+        st.success("✅ Penilaian berjaya dihantar ke Google Sheet!")
+        st.info("Sedia menilai poster seterusnya 👌")
     else:
-        st.error(f"❌ Gagal hantar data (Status: {r.status_code})")
+        st.error("❌ Gagal hantar data. Sila cuba semula.")
