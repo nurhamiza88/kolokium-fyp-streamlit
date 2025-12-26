@@ -32,8 +32,8 @@ CSV_AGIHAN_URL = (
 # GOOGLE FORM
 # =====================
 FORM_URL = (
-    "https://docs.google.com/forms/d/"
-    "1K6tBmnv7JBX_TCTIhCg3UxTKuGLbxbd5UYf4N4lFLmM"
+    "https://docs.google.com/forms/d/e/"
+    "1FAIpQLSdacWjlgA6fyQYvstqN0e792nzIowM6r4ceqOnVt67WgRWTfg"
     "/formResponse"
 )
 
