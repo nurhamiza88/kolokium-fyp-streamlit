@@ -14,12 +14,20 @@ st.title("📋 Sistem Penilaian Juri Kolokium Projek Tahun Akhir")
 # =====================
 # DATA STATIK (SELAMAT)
 # =====================
-SENARAI_JURI = [
-    "Dr. Hamiza",
-    "Dr. A",
-    "Dr. B",
-    "Dr. C"
-]
+if "nama_juri" not in st.session_state:
+    st.session_state.nama_juri = None
+
+st.subheader("Maklumat Juri")
+
+if st.session_state.nama_juri is None:
+    senarai_juri = get_juri_list()
+    nama = st.selectbox("Pilih Nama Juri", ["-- Pilih --"] + senarai_juri)
+
+    if nama != "-- Pilih --":
+        st.session_state.nama_juri = nama
+        st.success(f"Nama juri disimpan: {nama}")
+else:
+    st.info(f"👤 Juri: {st.session_state.nama_juri}")
 
 SENARAI_KOD = [
     "PRODUK001", "PRODUK002", "PRODUK003",
