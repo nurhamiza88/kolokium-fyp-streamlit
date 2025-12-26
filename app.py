@@ -18,6 +18,7 @@ st.title("📋 Sistem Penilaian Juri Kolokium Projek Tahun Akhir")
 # =====================
 CSV_JURI_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlsLSz46lRS0ncB4idH-6Xn_pGWb5jXXKsZdwKygizIHDrkjbjvzB3vzD9qxV06_2FTMLGxunuZUpy/pub?gid=1188865026&single=true&output=csv"
 
+@st.cache_data
 def get_juri_from_sheet():
     df = pd.read_csv(CSV_JURI_URL)
     return df["NAMA JURI"].dropna().tolist()
@@ -33,16 +34,16 @@ FORM_MAPPING = {
     "jenis_borang": "entry.2043825743",
     "jumlah": "entry.2012388652",
     "item": [
-        "entry.994184812",   # Item 1
-        "entry.1025336879",  # Item 2
-        "entry.1540256323",  # Item 3
-        "entry.90543189",    # Item 4
-        "entry.1040594050",  # Item 5
-        "entry.1209343348",  # Item 6
-        "entry.1535785034",  # Item 7
-        "entry.895520193",   # Item 8
-        "entry.964162367",   # Item 9
-        "entry.200002443"    # Item 10
+        "entry.994184812",
+        "entry.1025336879",
+        "entry.1540256323",
+        "entry.90543189",
+        "entry.1040594050",
+        "entry.1209343348",
+        "entry.1535785034",
+        "entry.895520193",
+        "entry.964162367",
+        "entry.200002443"
     ]
 }
 
@@ -150,10 +151,10 @@ if st.button("📤 Submit Penilaian"):
     for i, skor in enumerate(markah):
         payload[FORM_MAPPING["item"][i]] = skor
 
-    r = requests.post(FORM_URL, data=payload)
+    response = requests.post(FORM_URL, data=payload)
 
-    if r.status_code == 200:
+    if response.status_code in [200, 302]:
         st.balloons()
         st.success("🎉 Penilaian berjaya dihantar ke Google Sheet!")
     else:
-        st.error(f"❌ Gagal hantar data (Status: {r.status_code})")
+        st.error(f"❌ Gagal hantar data (Status: {response.status_code})")
