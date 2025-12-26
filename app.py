@@ -72,6 +72,7 @@ if st.session_state.nama_juri is None:
 else:
     st.info(f"👤 Juri: {st.session_state.nama_juri}")
 
+
 # =====================
 # MAKLUMAT POSTER
 # =====================
@@ -82,7 +83,13 @@ SENARAI_KOD = [
 ]
 
 st.subheader("Maklumat Poster")
-kod_poster = st.selectbox("Pilih Kod Poster", SENARAI_KOD)
+
+kod_poster = st.selectbox(
+    "Pilih Kod Poster",
+    SENARAI_KOD,
+    key="kod_poster_select"   # ✅ FIX PENTING
+)
+
 
 # =====================
 # RUBRIK PENILAIAN
