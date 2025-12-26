@@ -14,33 +14,28 @@ st.set_page_config(
 st.title("📋 Sistem Penilaian Juri Kolokium Projek Tahun Akhir")
 
 # =====================
-# GOOGLE SHEET (CSV)
+# GOOGLE SHEET CSV
 # =====================
+CSV_JURI_URL = (
+    "https://docs.google.com/spreadsheets/d/e/"
+    "2PACX-1vSlsLSz46lRS0ncB4idH-6Xn_pGWb5jXXKsZdwKygizIHDrkjbjvzB3vzD9qxV06_2FTMLGxunuZUpy"
+    "/pub?gid=1188865026&single=true&output=csv"
+)
 
-# Senarai juri
-CSV_JURI_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlsLSz46lRS0ncB4idH-6Xn_pGWb5jXXKsZdwKygizIHDrkjbjvzB3vzD9qxV06_2FTMLGxunuZUpy/pub?gid=1188865026&single=true&output=csv"
-
-# Agihan juri → kod poster
-CSV_AGIHAN_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlsLSz46lRS0ncB4idH-6Xn_pGWb5jXXKsZdwKygizIHDrkjbjvzB3vzD9qxV06_2FTMLGxunuZUpy/pub?gid=381457985&single=true&output=csv"
-
-def get_juri():
-    df = pd.read_csv(CSV_JURI_URL)
-    df.columns = df.columns.str.strip()
-    return df["Nama Juri"].dropna().unique().tolist()
-
-def get_kod_poster_juri(nama_juri):
-    df = pd.read_csv(CSV_AGIHAN_URL)
-    df.columns = df.columns.str.strip()  # 🔒 FIX UTAMA
-    kod = df.loc[
-        df["Nama Juri"] == nama_juri,
-        "Kod Poster"
-    ].dropna().unique().tolist()
-    return kod
+CSV_AGIHAN_URL = (
+    "https://docs.google.com/spreadsheets/d/e/"
+    "2PACX-1vSlsLSz46lRS0ncB4idH-6Xn_pGWb5jXXKsZdwKygizIHDrkjbjvzB3vzD9qxV06_2FTMLGxunuZUpy"
+    "/pub?gid=381457985&single=true&output=csv"
+)
 
 # =====================
 # GOOGLE FORM
 # =====================
-FORM_URL = "https://docs.google.com/forms/d/e/1K6tBmnv7JBX_TCTIhCg3UxTKuGLbxbd5UYf4N4lFLmM/formResponse"
+FORM_URL = (
+    "https://docs.google.com/forms/d/e/"
+    "1K6tBmnv7JBX_TCTIhCg3UxTKuGLbxbd5UYf4N4lFLmM"
+    "/formResponse"
+)
 
 FORM_MAPPING = {
     "nama_juri": "entry.1101626450",
@@ -57,9 +52,21 @@ FORM_MAPPING = {
         "entry.1535785034",
         "entry.895520193",
         "entry.964162367",
-        "entry.200002443",
+        "entry.200002443"
     ]
 }
+
+# =====================
+# LOAD DATA (CSV)
+# =====================
+@st.cache_data
+def load_juri():
+    df = pd.read_csv(CSV_JURI_URL)
+    return df["NAMA JURI"].dropna().tolist()
+
+@st.cache_data
+def load_agihan():
+    return pd.read_csv(CSV_AGIHAN_URL)
 
 # =====================
 # SESSION STATE
@@ -68,18 +75,18 @@ if "nama_juri" not in st.session_state:
     st.session_state.nama_juri = None
 
 # =====================
-# MAKLUMAT JURI
+# PILIH JURI
 # =====================
 st.subheader("Maklumat Juri")
 
 try:
-    senarai_juri = get_juri()
+    SENARAI_JURI = load_juri()
 except Exception:
     st.error("❌ Gagal tarik senarai juri.")
     st.stop()
 
 if st.session_state.nama_juri is None:
-    nama = st.selectbox("Pilih Nama Juri", ["-- Pilih --"] + senarai_juri)
+    nama = st.selectbox("Pilih Nama Juri", ["-- Pilih --"] + SENARAI_JURI)
     if nama != "-- Pilih --":
         st.session_state.nama_juri = nama
         st.success(f"Nama juri disimpan: {nama}")
@@ -87,18 +94,18 @@ else:
     st.info(f"👤 Juri: {st.session_state.nama_juri}")
 
 # =====================
-# MAKLUMAT POSTER (IKUT AGIHAN)
+# PILIH KOD POSTER (IKUT AGIHAN)
 # =====================
 st.subheader("Maklumat Poster")
 
-try:
-    kod_dibenarkan = get_kod_poster_juri(st.session_state.nama_juri)
-except Exception:
-    st.error("❌ Gagal tarik agihan juri.")
-    st.stop()
+df_agihan = load_agihan()
+
+kod_dibenarkan = df_agihan[
+    df_agihan["Nama Juri"] == st.session_state.nama_juri
+]["Kod Poster"].dropna().unique().tolist()
 
 if not kod_dibenarkan:
-    st.warning("⚠️ Tiada poster diagihkan kepada juri ini.")
+    st.warning("⚠️ Tiada kod poster diagihkan kepada juri ini.")
     st.stop()
 
 kod_poster = st.selectbox("Pilih Kod Poster", kod_dibenarkan)
@@ -110,29 +117,29 @@ if kod_poster.startswith("PRODUK") or kod_poster.startswith("PENDIDIKAN"):
     jenis_borang = "PRODUK / PENDIDIKAN"
     soalan = [
         "Reka bentuk poster jelas dan menarik.",
-        "Isi kandungan poster lengkap merangkumi aspek utama.",
+        "Isi kandungan poster lengkap merangkumi 11 aspek utama kajian.",
         "Poster menunjukkan elemen inovatif.",
         "Produk atau hasil kajian menunjukkan keaslian.",
         "Produk atau hasil kajian relevan.",
-        "Instrumen/kajian melalui penilaian asas.",
-        "Penyampaian yakin dan bertenaga.",
+        "Produk atau instrumen kajian melalui penilaian asas.",
+        "Penyampaian adalah yakin dan bertenaga.",
         "Kajian diterangkan secara sistematik.",
-        "Komunikasi lancar.",
-        "Menjawab soalan dengan kritikal."
+        "Komunikasi lancar tanpa verbiage.",
+        "Pembentang menjawab soalan dengan kritikal."
     ]
 else:
     jenis_borang = "STATISTIK & MATEMATIK GUNAAN"
     soalan = [
-        "Reka bentuk poster menyokong kefahaman kajian.",
-        "Isi kandungan poster lengkap.",
+        "Reka bentuk poster jelas dan menyokong kefahaman kajian.",
+        "Isi kandungan poster lengkap merangkumi 10 aspek utama.",
         "Poster menunjukkan elemen inovatif.",
-        "Kaedah matematik/statistik sesuai.",
-        "Analisis data tepat.",
-        "Kajian menyumbang kepada ilmu.",
-        "Penyampaian yakin.",
-        "Kajian sistematik.",
+        "Kaedah matematik/statistik sesuai dan tepat.",
+        "Persembahan analisis data tepat.",
+        "Kajian menyumbang kepada body of knowledge.",
+        "Penyampaian adalah yakin dan bertenaga.",
+        "Kajian diterangkan secara sistematik.",
         "Komunikasi lancar.",
-        "Jawapan kritikal."
+        "Pembentang menjawab soalan dengan kritikal."
     ]
 
 # =====================
@@ -144,9 +151,9 @@ st.caption("Skala: 1 = Tidak Setuju | 2 = Kurang Setuju | 3 = Setuju | 4 = Sanga
 
 markah = []
 
-for i, teks in enumerate(soalan, start=1):
+for i, item in enumerate(soalan, start=1):
     skor = st.radio(
-        f"{i}. {teks}",
+        f"{i}. {item}",
         [1, 2, 3, 4],
         horizontal=True,
         key=f"item_{i}"
@@ -157,7 +164,7 @@ jumlah = sum(markah)
 st.success(f"✅ Jumlah Markah: {jumlah} / 40")
 
 # =====================
-# SUBMIT
+# SUBMIT KE GOOGLE FORM
 # =====================
 if st.button("📤 Submit Penilaian"):
     payload = {
@@ -172,7 +179,7 @@ if st.button("📤 Submit Penilaian"):
 
     r = requests.post(FORM_URL, data=payload)
 
-    if r.status_code == 200:
+    if r.status_code in [200, 302]:
         st.balloons()
         st.success("🎉 Penilaian berjaya dihantar ke Google Sheet!")
     else:
