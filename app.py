@@ -16,10 +16,10 @@ st.title("📋 Sistem Penilaian Juri Kolokium Projek Tahun Akhir")
 # GOOGLE SHEET (CSV)
 # =====================
 
-# Senarai juri
+# Senarai Juri
 CSV_JURI_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlsLSz46lRS0ncB4idH-6Xn_pGWb5jXXKsZdwKygizIHDrkjbjvzB3vzD9qxV06_2FTMLGxunuZUpy/pub?gid=1188865026&single=true&output=csv"
 
-# Agihan juri → kod poster
+# Agihan Juri → Kod Poster
 CSV_AGIHAN_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlsLSz46lRS0ncB4idH-6Xn_pGWb5jXXKsZdwKygizIHDrkjbjvzB3vzD9qxV06_2FTMLGxunuZUpy/pub?gid=381457985&single=true&output=csv"
 
 @st.cache_data
@@ -32,6 +32,8 @@ def get_juri_from_sheet():
 def get_agihan_juri():
     df = pd.read_csv(CSV_AGIHAN_URL)
     df.columns = df.columns.str.strip()
+    df["Nama Juri"] = df["Nama Juri"].str.strip()
+    df["Kod Poster"] = df["Kod Poster"].str.strip()
     return df
 
 # =====================
@@ -78,8 +80,7 @@ except Exception:
 if st.session_state.nama_juri is None:
     nama = st.selectbox(
         "Pilih Nama Juri",
-        ["-- Pilih --"] + SENARAI_JURI,
-        key="nama_juri_select"
+        ["-- Pilih --"] + SENARAI_JURI
     )
     if nama != "-- Pilih --":
         st.session_state.nama_juri = nama
@@ -94,10 +95,16 @@ st.subheader("Maklumat Poster")
 
 df_agihan = get_agihan_juri()
 
-nama_juri = st.session_state.nama_juri.strip()
+nama_juri = st.session_state.nama_juri
+if nama_juri is None:
+    st.stop()
+
+nama_juri = nama_juri.strip()
 
 kod_dibenarkan = (
-    df_agihan[df_agihan["Nama Juri"] == nama_juri]["Kod Poster"]
+    df_agihan[
+        df_agihan["Nama Juri"].str.lower() == nama_juri.lower()
+    ]["Kod Poster"]
     .dropna()
     .unique()
     .tolist()
@@ -109,8 +116,7 @@ if not kod_dibenarkan:
 
 kod_poster = st.selectbox(
     "Pilih Kod Poster (Diagihkan kepada anda)",
-    kod_dibenarkan,
-    key="kod_poster_select"
+    kod_dibenarkan
 )
 
 # =====================
@@ -180,10 +186,4 @@ if st.button("📤 Submit Penilaian"):
     for i, skor in enumerate(markah):
         payload[FORM_MAPPING["item"][i]] = skor
 
-    response = requests.post(FORM_URL, data=payload)
-
-    if response.status_code in [200, 302]:
-        st.balloons()
-        st.success("🎉 Penilaian berjaya dihantar ke Google Sheet!")
-    else:
-        st.error(f"❌ Gagal hantar data (Status: {response.status_code})")
+    response = req
