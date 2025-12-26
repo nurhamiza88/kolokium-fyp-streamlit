@@ -1,3 +1,7 @@
+import requests
+
+FORM_URL = "https://docs.google.com/forms/d/e/1K6tBmnv7JBX_TCTIhCg3UxTKuGLbxbd5UYf4N4lFLmM/formResponse"
+
 import streamlit as st
 import pandas as pd
 from datetime import datetime
