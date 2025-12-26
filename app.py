@@ -18,8 +18,12 @@ st.title("📋 Sistem Penilaian Juri Kolokium Projek Tahun Akhir")
 # =====================
 
 # 1️⃣ CSV JURI (Publish to web → CSV)
+
+
 JURI_CSV_URL = (
-https://docs.google.com/spreadsheets/d/e/2PACX-1vSlsLSz46lRS0ncB4idH-6Xn_pGWb5jXXKsZdwKygizIHDrkjbjvzB3vzD9qxV06_2FTMLGxunuZUpy/pub?gid=1188865026&single=true&output=csv
+"https://docs.google.com/spreadsheets/d/e/"
+    "2PACX-1vSlsLSz46lRS0ncB4idH-6Xn_pGWb5jXXKsZdwKygizIHDrkjbjvzB3vzD9qxV06_2FTMLGxunuZUpy"
+    "/pub?gid=1188865026&single=true&output=csv"
 )
 
 # 2️⃣ Google Form (formResponse)
