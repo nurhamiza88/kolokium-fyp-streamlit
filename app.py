@@ -59,7 +59,7 @@ if kod_poster.startswith("PRODUK") or kod_poster.startswith("PENDIDIKAN"):
     jenis_borang = "PRODUK / PENDIDIKAN"
     soalan = [
         "Reka bentuk poster jelas, menarik dan penggunaan AI menyokong kefahaman kajian.",
-        "Isi kandungan poster lengkap merangkumi 11 aspek utama kajian.",
+        "Isi kandungan poster lengkap merangkumi 11 aspek utama kajian (tajuk, abstrak, pernyataan masalah, objektif /soalan kajian, rekabentuk, populasi/sampel/Teknik pensampelan, instrumen, analisis data, dapatan, kesimpulan, implikasi).",
         "Poster menunjukkan elemen inovatif bersesuaian dengan kajian.",
         "Produk atau hasil kajian menunjukkan keaslian atau penambahbaikan bermakna.",
         "Produk atau hasil kajian relevan dan membantu menyelesaikan masalah.",
@@ -72,15 +72,15 @@ if kod_poster.startswith("PRODUK") or kod_poster.startswith("PENDIDIKAN"):
 else:
     jenis_borang = "STATISTIK & MATEMATIK GUNAAN"
     soalan = [
-        "Reka bentuk poster jelas dan menyokong kefahaman kajian.",
-        "Isi kandungan poster lengkap merangkumi 10 aspek utama kajian.",
+        "Reka bentuk poster jelas, menarik dan penggunaan AI menyokong kefahaman kajian.",
+        "Isi kandungan poster lengkap merangkumi 10 aspek utama kajian (tajuk, * abstrak, pernyataan masalah, objektif/soalan kajian, penjelasan teknik/kaedah matematik/statistik, analisis data, dapatan kajian, kesimpulan, implikasi dan rujukan).",
         "Poster menunjukkan elemen inovatif bersesuaian dengan kajian.",
-        "Kaedah matematik/statistik dipilih dan diaplikasi dengan tepat.",
+        "Kaedah matematik/statistik yang dipilih bersesuaian dan diaplikasi dengan tepat.",
         "Persembahan analisis data tepat dan bersesuaian.",
         "Kajian menyumbang kepada body of knowledge dan draf artikel disediakan.",
         "Penyampaian adalah sangat yakin dan bertenaga.",
         "Kajian diterangkan secara sistematik dan tepat.",
-        "Komunikasi lancar tanpa verbiage.",
+        "Komunikasi lancar tanpa verbiage seperti umm atau uhh.",
         "Pembentang berupaya menjawab soalan dengan rasional dan kritikal."
     ]
 
