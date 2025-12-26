@@ -1,3 +1,21 @@
+import gspread
+import json
+from oauth2client.service_account import ServiceAccountCredentials
+
+def get_juri_list():
+    scope = [
+        "https://spreadsheets.google.com/feeds",
+        "https://www.googleapis.com/auth/drive"
+    ]
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(
+        json.loads(st.secrets["gcp"]["credentials_json"]),
+        scope
+    )
+    client = gspread.authorize(creds)
+    sh = client.open("KOLOKIUM_FYP_2026")   # ⬅️ tukar
+    ws = sh.worksheet("JURI")
+    return ws.col_values(1)[1:]  # buang header
+
 import streamlit as st
 from datetime import datetime
 
