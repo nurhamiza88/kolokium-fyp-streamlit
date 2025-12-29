@@ -109,5 +109,5 @@ st.caption(
     f"Dikemaskini: {datetime.now().strftime('%d %B %Y, %I:%M %p')}"
 )
 st.caption(
-    "© UPSI | Sistem Penilaian Kolokium Projek Tahun Akhir"
+    "© UPSI | Sistem Penilaian Kolokium Projek Tahun Akhir  |  Dr. Nur Hamiza binti Adenan"
 )
