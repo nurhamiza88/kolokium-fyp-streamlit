@@ -6,7 +6,7 @@ from datetime import datetime
 # CONFIG
 # =====================
 st.set_page_config(
-    page_title="Dashboard Keputusan Kolokium FYP",
+    page_title="Dashboard Keputusan Kolokium FYP 2026",
     layout="wide"
 )
 
