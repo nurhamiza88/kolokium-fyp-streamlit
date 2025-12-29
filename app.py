@@ -149,6 +149,12 @@ st.divider()
 st.subheader(f"Instrumen Penilaian ({jenis_borang})")
 st.caption("Skala: 1 = Tidak Setuju | 2 = Kurang Setuju | 3 = Setuju | 4 = Sangat Setuju")
 
+# 👉 AYAT POLISI (POSISI PALING CANTIK)
+st.info(
+    "📌 Sekiranya penilaian dihantar lebih daripada sekali oleh juri yang sama "
+    "bagi poster yang sama, hanya penilaian TERKINI akan diambil kira "
+    "dalam pengiraan purata markah."
+)
 markah = []
 
 for i, item in enumerate(soalan, start=1):
