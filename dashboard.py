@@ -103,10 +103,17 @@ for kategori in ["Produk", "Pendidikan", "Statistik / Matematik"]:
         f"{df_kat['Jumlah Markah'].mean():.2f} / 80"
     )
 
-    st.dataframe(
-        df_kat[["Ranking", "Kod Poster", "Jumlah Markah", "Bilangan Juri"]],
-        use_container_width=True
-    )
+df_table = df_kat[["Ranking", "Kod Poster", "Jumlah Markah", "Bilangan Juri"]]
+
+st.dataframe(
+    df_table.style.set_properties(**{
+        "text-align": "center"
+    }).set_table_styles([
+        dict(selector="th", props=[("text-align", "center")])
+    ]),
+    use_container_width=True
+)
+
 
 # =====================
 # FOOTER
