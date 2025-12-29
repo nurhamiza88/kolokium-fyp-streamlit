@@ -19,14 +19,12 @@ st.info(
 )
 
 # =====================
-# GOOGLE SHEET (RUMUSAN AKHIR)
+# GOOGLE SHEET CSV (Published link)
 # =====================
-SHEET_ID = "14YrOAWbC0M4Cd2Vg02TEJ_xObOZaMuHEcDwpWM_cvfg"
-GID_RUMUSAN_AKHIR = "PASTE_GID_DI_SINI"  # <-- WAJIB tukar
-
 CSV_URL = (
-    f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/"
-    f"export?format=csv&gid={GID_RUMUSAN_AKHIR}"
+    "https://docs.google.com/spreadsheets/d/e/"
+    "2PACX-1vSmxI1CuK3pVwsVlHtyrsJ1yLxyPzZmpa_eX3daieYJPsBt7_POD9-Iu4FZb9x3NQjMxdJAoH52_0sv"
+    "/pub?gid=694659483&single=true&output=csv"
 )
 
 @st.cache_data
@@ -40,12 +38,13 @@ def load_data():
 # =====================
 try:
     df = load_data()
-except Exception:
+except Exception as e:
     st.error("❌ Gagal memuatkan data dari Google Sheet.")
     st.stop()
 
-# Expected columns:
-# Kod Poster | Purata Markah
+# Pastikan sheet ada:
+# - "Kod Poster"
+# - "Purata Markah"
 
 # =====================
 # TAMBAH KATEGORI
@@ -84,7 +83,6 @@ st.subheader("📂 Keputusan Mengikut Kategori")
 
 for kategori in ["Produk", "Pendidikan", "Statistik / Matematik"]:
     df_kat = df[df["Kategori"] == kategori].copy()
-
     if df_kat.empty:
         continue
 
