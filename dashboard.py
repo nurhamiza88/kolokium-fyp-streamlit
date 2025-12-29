@@ -42,7 +42,7 @@ except Exception:
     st.error("❌ Gagal memuatkan data dari Google Sheet.")
     st.stop()
 
-# Andaian kolum:
+# Jangkaan kolum:
 # Kod Poster | Jumlah Markah | Bilangan Juri
 
 # =====================
@@ -64,17 +64,89 @@ df["Kategori"] = df["Kod Poster"].apply(kategori_poster)
 # =====================
 st.subheader("📌 Ringkasan Keseluruhan")
 
-col1, col2, col3 = st.columns(3)
+c1, c2, c3 = st.columns(3)
 
-with col1:
+with c1:
     st.metric("Jumlah Poster Dinilai", df["Kod Poster"].nunique())
 
-with col2:
+with c2:
     st.metric(
         "Purata Jumlah Markah (2 Juri)",
         f"{df['Jumlah Markah'].mean():.2f} / 80"
     )
 
-with col3:
+with c3:
     st.metric(
-        "Poster Lengk
+        "Poster Lengkap 2 Juri",
+        int((df["Bilangan Juri"] == 2).sum())
+    )
+
+# =====================
+# STYLE TABLE
+# =====================
+def style_table(df_table):
+    def highlight(row):
+        styles = [""] * len(row)
+
+        # Ranking 1
+        if row["Ranking"] == 1:
+            styles = ["background-color:#e8f5e9;font-weight:bold"] * len(row)
+
+        # Status bilangan juri
+        if row["Bilangan Juri"] < 2:
+            styles = ["background-color:#fff3cd"] * len(row)
+        elif row["Bilangan Juri"] == 2:
+            styles = ["background-color:#e8f5e9"] * len(row)
+
+        return styles
+
+    return (
+        df_table.style
+        .apply(highlight, axis=1)
+        .set_properties(**{"text-align": "center"})
+        .set_table_styles([
+            {"selector": "th", "props": [("text-align", "center")]}
+        ])
+    )
+
+# =====================
+# KEPUTUSAN MENGIKUT KATEGORI
+# =====================
+st.divider()
+st.subheader("📂 Keputusan Mengikut Kategori")
+
+for kategori in ["Produk", "Pendidikan", "Statistik / Matematik"]:
+    df_kat = df[df["Kategori"] == kategori].copy()
+
+    if df_kat.empty:
+        continue
+
+    df_kat = df_kat.sort_values("Jumlah Markah", ascending=False)
+    df_kat.insert(0, "Ranking", range(1, len(df_kat) + 1))
+
+    st.markdown(f"### {kategori}")
+    st.caption(
+        f"Purata Jumlah Markah Kategori {kategori}: "
+        f"{df_kat['Jumlah Markah'].mean():.2f} / 80"
+    )
+
+    df_table = df_kat[
+        ["Ranking", "Kod Poster", "Jumlah Markah", "Bilangan Juri"]
+    ]
+
+    st.dataframe(
+        style_table(df_table),
+        use_container_width=True
+    )
+
+# =====================
+# FOOTER
+# =====================
+st.divider()
+st.caption(
+    f"Sumber Data: Google Form & Google Sheet (Automatik) | "
+    f"Dikemaskini: {datetime.now().strftime('%d %B %Y, %I:%M %p')}"
+)
+st.caption(
+    "© UPSI | Sistem Penilaian Kolokium Projek Tahun Akhir"
+)
