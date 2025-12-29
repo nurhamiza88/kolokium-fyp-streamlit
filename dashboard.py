@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 # =====================
 # CONFIG
@@ -140,12 +141,12 @@ for kategori in ["Produk", "Pendidikan", "Statistik / Matematik"]:
     )
 
 # =====================
-# FOOTER
+# FOOTER (MALAYSIA TIME)
 # =====================
 st.divider()
 st.caption(
     f"Sumber Data: Google Form & Google Sheet (Automatik) | "
-    f"Dikemaskini: {datetime.now().strftime('%d %B %Y, %I:%M %p')}"
+    f"Dikemaskini: {datetime.now(ZoneInfo('Asia/Kuala_Lumpur')).strftime('%d %B %Y, %I:%M %p')}"
 )
 st.caption(
     "© UPSI | Sistem Penilaian Kolokium Projek Tahun Akhir"
