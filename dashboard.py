@@ -6,7 +6,7 @@ from datetime import datetime
 # CONFIG
 # =====================
 st.set_page_config(
-    page_title="Dashboard Keputusan Kolokium FYP 2026",
+    page_title="Dashboard Keputusan Kolokium FYP",
     layout="wide"
 )
 
@@ -15,11 +15,11 @@ st.title("📊 Dashboard Keputusan Kolokium Projek Tahun Akhir")
 st.info(
     "📌 Sekiranya penilaian dihantar lebih daripada sekali oleh juri yang sama "
     "bagi poster yang sama, hanya penilaian TERKINI akan diambil kira "
-    "dalam pengiraan purata markah."
+    "dalam pengiraan markah."
 )
 
 # =====================
-# GOOGLE SHEET CSV (Published link)
+# GOOGLE SHEET CSV (PUBLISH TO WEB)
 # =====================
 CSV_URL = (
     "https://docs.google.com/spreadsheets/d/e/"
@@ -38,21 +38,18 @@ def load_data():
 # =====================
 try:
     df = load_data()
-except Exception as e:
+except Exception:
     st.error("❌ Gagal memuatkan data dari Google Sheet.")
     st.stop()
 
-# Pastikan sheet ada:
-# - "Kod Poster"
-# - "Purata Markah"
-
 # =====================
-# TAMBAH KATEGORI
+# TAMBAH KATEGORI POSTER
 # =====================
 def kategori_poster(kod):
-    if str(kod).startswith("PRODUK"):
+    kod = str(kod)
+    if kod.startswith("PRODUK"):
         return "Produk"
-    elif str(kod).startswith("PENDIDIKAN"):
+    elif kod.startswith("PENDIDIKAN"):
         return "Pendidikan"
     else:
         return "Statistik / Matematik"
@@ -64,15 +61,24 @@ df["Kategori"] = df["Kod Poster"].apply(kategori_poster)
 # =====================
 st.subheader("📌 Ringkasan Keseluruhan")
 
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.metric("Jumlah Poster Dinilai", df["Kod Poster"].nunique())
+    st.metric(
+        "Jumlah Poster Dinilai",
+        df["Kod Poster"].nunique()
+    )
 
 with col2:
     st.metric(
-        "Purata Markah Keseluruhan",
-        f"{df['Purata Markah'].mean():.2f} / 40"
+        "Purata Jumlah Markah (2 Juri)",
+        f"{df['Jumlah Markah'].mean():.2f} / 80"
+    )
+
+with col3:
+    st.metric(
+        "Poster Lengkap 2 Juri",
+        (df["Bilangan Juri"] == 2).sum()
     )
 
 # =====================
@@ -83,20 +89,22 @@ st.subheader("📂 Keputusan Mengikut Kategori")
 
 for kategori in ["Produk", "Pendidikan", "Statistik / Matematik"]:
     df_kat = df[df["Kategori"] == kategori].copy()
+
     if df_kat.empty:
         continue
 
-    df_kat = df_kat.sort_values("Purata Markah", ascending=False)
+    # Susun ikut JUMLAH MARKAH (TERTINGGI)
+    df_kat = df_kat.sort_values("Jumlah Markah", ascending=False)
     df_kat.insert(0, "Ranking", range(1, len(df_kat) + 1))
 
     st.markdown(f"### {kategori}")
     st.caption(
-        f"Purata Kategori {kategori}: "
-        f"{df_kat['Purata Markah'].mean():.2f} / 40"
+        f"Purata Jumlah Markah Kategori {kategori}: "
+        f"{df_kat['Jumlah Markah'].mean():.2f} / 80"
     )
 
     st.dataframe(
-        df_kat[["Ranking", "Kod Poster", "Purata Markah"]],
+        df_kat[["Ranking", "Kod Poster", "Jumlah Markah", "Bilangan Juri"]],
         use_container_width=True
     )
 
@@ -109,5 +117,5 @@ st.caption(
     f"Dikemaskini: {datetime.now().strftime('%d %B %Y, %I:%M %p')}"
 )
 st.caption(
-    "© UPSI | Sistem Penilaian Kolokium Projek Tahun Akhir  |  Dr. Nur Hamiza binti Adenan"
+    "© UPSI | Sistem Penilaian Kolokium Projek Tahun Akhir"
 )
