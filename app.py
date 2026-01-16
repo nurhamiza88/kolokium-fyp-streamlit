@@ -151,7 +151,7 @@ st.caption("Skala: 1 = Tidak Setuju | 2 = Kurang Setuju | 3 = Setuju | 4 = Sanga
 st.info(
     "📌 Sekiranya penilaian dihantar lebih daripada sekali oleh juri yang sama "
     "bagi poster yang sama, hanya penilaian TERKINI akan diambil kira "
-    "dalam pengiraan purata markah."
+    "dalam pengiraan markah."
 )
 markah = []
 
