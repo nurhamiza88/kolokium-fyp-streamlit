@@ -164,7 +164,12 @@ for i, item in enumerate(soalan, start=1):
     )
     markah.append(skor)
 
-st.success(f"✅ Jumlah Markah: {jumlah} / 100")
+# Kira jumlah markah
+jumlah = sum(markah)
+
+# Papar jumlah
+maksimum = len(soalan) * 10
+st.success(f"✅ Jumlah Markah: {jumlah} / {maksimum}")
 
 # =====================
 # SUBMIT KE GOOGLE FORM
