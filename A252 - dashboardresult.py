@@ -25,7 +25,7 @@ st.info(
 CSV_URL = (
     "https://docs.google.com/spreadsheets/d/e/"
     "2PACX-1vTOQDlkdX99vaaVXIWtFvyjd81QrAWWVK8_LrWD24cvPgovc_Nia4X2hrQqbWtH7a2rcHTjVWMloTDO"
-    "/pub?gid=298587493&single=true&output=csv"
+    "/pub?gid=169870122&single=true&output=csv"
 )
 
 @st.cache_data
