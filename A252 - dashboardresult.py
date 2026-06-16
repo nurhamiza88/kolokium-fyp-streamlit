@@ -53,16 +53,14 @@ def kategori_poster(kod):
     kod = str(kod)
 
     if kod.startswith("PK"):
-        return "Produk"
-    elif kod.startswith("PDD"):
-        return "Pendidikan"
-    elif kod.startswith("SM"):
-        return "Statistik / Matematik"
+        return "Inovasi"
+
+    elif kod.startswith("PDD") or kod.startswith("SM"):
+        return "Bukan Inovasi"
 
     return "Lain-lain"
 
 df["Kategori"] = df["Kod Poster"].apply(kategori_poster)
-
 # =====================
 # RINGKASAN KESELURUHAN
 # =====================
