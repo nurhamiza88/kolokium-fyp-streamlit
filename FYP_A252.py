@@ -7,7 +7,7 @@ from datetime import datetime
 # CONFIG
 # =====================
 st.set_page_config(
-    page_title="Penilaian Juri Kolokium FYP",
+    page_title="Penilaian Juri Kolokium FYP - A252",
     layout="wide"
 )
 
@@ -193,4 +193,4 @@ if st.button("📤 Submit Penilaian"):
     else:
         st.error(f"❌ Gagal hantar data (Status: {r.status_code})")
 st.divider()
-st.caption("© 2026 | UNIVERSITI PENDIDIKAN SULTAN IDRIS | Sistem Penilaian Kolokium Projek Tahun Akhir | Dr. Nur Hamiza binti Adenan")
+st.caption("© 2026 | UNIVERSITI PENDIDIKAN SULTAN IDRIS | A252 - Sistem Penilaian Kolokium Projek Tahun Akhir | Dr. Nur Hamiza binti Adenan")
