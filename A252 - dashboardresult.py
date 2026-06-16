@@ -118,8 +118,6 @@ st.divider()
 st.subheader("🏆 Keputusan Mengikut Kategori")
 
 for kategori in ["Inovasi", "Bukan Inovasi"]:
-
-for kategori in ["Produk", "Pendidikan", "Statistik / Matematik"]:
     df_kat = df[df["Kategori"] == kategori].copy()
 
     if df_kat.empty:
