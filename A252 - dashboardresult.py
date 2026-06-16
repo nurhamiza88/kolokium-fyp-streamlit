@@ -24,8 +24,8 @@ st.info(
 # =====================
 CSV_URL = (
     "https://docs.google.com/spreadsheets/d/e/"
-    "2PACX-1vSmxI1CuK3pVwsVlHtyrsJ1yLxyPzZmpa_eX3daieYJPsBt7_POD9-Iu4FZb9x3NQjMxdJAoH52_0sv"
-    "/pub?gid=694659483&single=true&output=csv"
+    "2PACX-1vTOQDlkdX99vaaVXIWtFvyjd81QrAWWVK8_LrWD24cvPgovc_Nia4X2hrQqbWtH7a2rcHTjVWMloTDO"
+    "/pub?gid=2985874933&single=true&output=csv"
 )
 
 @st.cache_data
@@ -51,12 +51,15 @@ except Exception:
 # =====================
 def kategori_poster(kod):
     kod = str(kod)
-    if kod.startswith("PRODUK"):
+
+    if kod.startswith("PK"):
         return "Produk"
-    elif kod.startswith("PENDIDIKAN"):
+    elif kod.startswith("PDD"):
         return "Pendidikan"
-    else:
+    elif kod.startswith("SM"):
         return "Statistik / Matematik"
+
+    return "Lain-lain"
 
 df["Kategori"] = df["Kod Poster"].apply(kategori_poster)
 
@@ -73,7 +76,7 @@ with c1:
 with c2:
     st.metric(
         "Purata Jumlah Markah (2 Juri)",
-        f"{df['Jumlah Markah'].mean():.2f} / 80"
+        f"{df['Jumlah Markah'].mean():.2f} / 200"
     )
 
 with c3:
@@ -128,7 +131,7 @@ for kategori in ["Produk", "Pendidikan", "Statistik / Matematik"]:
     st.markdown(f"### {kategori}")
     st.caption(
         f"Purata Jumlah Markah Kategori {kategori}: "
-        f"{df_kat['Jumlah Markah'].mean():.2f} / 80"
+        f"{df_kat['Jumlah Markah'].mean():.2f} / 200"
     )
 
     df_table = df_kat[
