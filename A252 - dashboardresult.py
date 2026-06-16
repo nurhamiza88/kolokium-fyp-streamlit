@@ -115,7 +115,9 @@ def style_table(df_table):
 # KEPUTUSAN MENGIKUT KATEGORI
 # =====================
 st.divider()
-st.subheader("📂 Keputusan Mengikut Kategori")
+st.subheader("🏆 Keputusan Mengikut Kategori")
+
+for kategori in ["Inovasi", "Bukan Inovasi"]:
 
 for kategori in ["Produk", "Pendidikan", "Statistik / Matematik"]:
     df_kat = df[df["Kategori"] == kategori].copy()
