@@ -11,7 +11,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("📋 Sistem Penilaian Juri Kolokium Projek Tahun Akhir")
+st.title("📋 A252 - Sistem Penilaian Juri Kolokium Projek Tahun Akhir")
 
 # =====================
 # GOOGLE SHEET CSV
