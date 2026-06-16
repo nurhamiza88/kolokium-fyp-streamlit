@@ -61,27 +61,7 @@ def kategori_poster(kod):
     return "Lain-lain"
 
 df["Kategori"] = df["Kod Poster"].apply(kategori_poster)
-# =====================
-# RINGKASAN KESELURUHAN
-# =====================
-st.subheader("📌 Ringkasan Keseluruhan")
 
-c1, c2, c3 = st.columns(3)
-
-with c1:
-    st.metric("Jumlah Poster Dinilai", df["Kod Poster"].nunique())
-
-with c2:
-    st.metric(
-        "Purata Jumlah Markah (2 Juri)",
-        f"{df['Jumlah Markah'].mean():.2f} / 200"
-    )
-
-with c3:
-    st.metric(
-        "Poster Lengkap 2 Juri",
-        int((df["Bilangan Juri"] == 2).sum())
-    )
 
 # =====================
 # STYLE TABLE
