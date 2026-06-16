@@ -40,7 +40,7 @@ FORM_URL = (
 FORM_MAPPING = {
     "nama_juri": "entry.1101626450",
     "kod_poster": "entry.1011436319",
-    "jenis_borang": "entry.2043825743",
+    "jenis_borang": "entry.2005476751",
     "jumlah": "entry.2012388652",
     "item": [
         "entry.994184812",
