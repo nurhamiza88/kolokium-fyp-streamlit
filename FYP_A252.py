@@ -147,7 +147,7 @@ else:
 # =====================
 st.divider()
 st.subheader(f"Instrumen Penilaian ({jenis_borang})")
-st.caption("Skala: 1 = Tidak Setuju | 2 = Kurang Setuju | 3 = Setuju | 4 = Sangat Setuju")
+st.caption("Skala: 1 = Sangat Tidak Setuju | 10 = Sangat Setuju")
 st.info(
     "📌 Sekiranya penilaian dihantar lebih daripada sekali oleh juri yang sama "
     "bagi poster yang sama, hanya penilaian TERKINI akan diambil kira "
@@ -158,14 +158,14 @@ markah = []
 for i, item in enumerate(soalan, start=1):
     skor = st.radio(
         f"{i}. {item}",
-        [1, 2, 3, 4],
+        [1,2,3,4,5,6,7,8,9,10],
         horizontal=True,
         key=f"item_{i}"
     )
     markah.append(skor)
 
-jumlah = sum(markah)
-st.success(f"✅ Jumlah Markah: {jumlah} / 40")
+maksimum = len(soalan) * 10
+st.success(f"✅ Jumlah Markah: {jumlah} / {maksimum}")
 
 # =====================
 # SUBMIT KE GOOGLE FORM
