@@ -113,7 +113,7 @@ kod_poster = st.selectbox("Pilih Kod Poster", kod_dibenarkan)
 # =====================
 # RUBRIK
 # =====================
-if kod_poster.startswith("PRODUK") or kod_poster.startswith("PENDIDIKAN"):
+if kod_poster.startswith("PK") or kod_poster.startswith("PDD"):
     jenis_borang = "PRODUK / PENDIDIKAN"
     soalan = [
         "Reka bentuk poster jelas, menarik dan penggunaan AI menyokong kefahaman kajian (contoh: visualisasi data, infografik, atau sokongan analisis).",
