@@ -70,11 +70,6 @@ def style_table(df_table):
     def highlight(row):
         styles = [""] * len(row)
 
-        # Ranking 1
-        if row["Ranking"] == 1:
-            styles = ["background-color:#e8f5e9;font-weight:bold"] * len(row)
-
-        # Status bilangan juri
         if row["Bilangan Juri"] < 2:
             styles = ["background-color:#fff3cd"] * len(row)
         elif row["Bilangan Juri"] == 2:
@@ -91,6 +86,34 @@ def style_table(df_table):
         ])
     )
 
+# =====================
+# RINGKASAN KESELURUHAN
+# =====================
+st.subheader("📌 Ringkasan Keseluruhan")
+
+c1, c2, c3 = st.columns(3)
+
+with c1:
+    st.metric(
+        "Jumlah Poster Dinilai",
+        df["Kod Poster"].nunique()
+    )
+
+with c2:
+    st.metric(
+        "Purata Jumlah Markah",
+        f"{df['Jumlah Markah'].mean():.4f}"
+    )
+
+with c3:
+    st.metric(
+        "Poster Lengkap 2 Juri",
+        int((df["Bilangan Juri"] == 2).sum())
+    )
+
+# =====================
+# KEPUTUSAN MENGIKUT KATEGORI
+# =====================
 st.divider()
 st.subheader("🏆 Keputusan Mengikut Kategori")
 
@@ -103,28 +126,42 @@ for kategori in ["Inovasi", "Bukan Inovasi"]:
 
     # Tajuk kategori
     if kategori == "Inovasi":
-        st.markdown("### 🟢 Kategori Inovasi")
+        st.markdown("## 🟢 Kategori Inovasi")
     else:
-        st.markdown("### 🟡 Kategori Bukan Inovasi")
+        st.markdown("## 🟡 Kategori Bukan Inovasi")
 
+    # Susun markah tertinggi ke terendah
     df_kat = df_kat.sort_values(
-        "Jumlah Markah",
+        by="Jumlah Markah",
         ascending=False
     )
 
+    # Reset index
+    df_kat = df_kat.reset_index(drop=True)
+
+    # Ranking
     df_kat.insert(
         0,
         "Ranking",
         range(1, len(df_kat) + 1)
     )
-    df_table = df_kat[
-    ["Ranking", "Kod Poster", "Jumlah Markah", "Bilangan Juri"]
-]
 
-st.dataframe(
-    style_table(df_table),
-    use_container_width=True
-)
+    # Paparan 4 titik perpuluhan
+    df_kat["Jumlah Markah"] = (
+        df_kat["Jumlah Markah"]
+        .astype(float)
+        .round(4)
+    )
+
+    df_table = df_kat[
+        ["Ranking", "Kod Poster", "Jumlah Markah", "Bilangan Juri"]
+    ]
+
+    st.dataframe(
+        style_table(df_table),
+        use_container_width=True,
+        hide_index=True
+    )
 
 # =====================
 # FOOTER (MALAYSIA TIME)
