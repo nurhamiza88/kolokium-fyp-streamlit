@@ -117,12 +117,9 @@ for kategori in ["Inovasi", "Bukan Inovasi"]:
         "Ranking",
         range(1, len(df_kat) + 1)
     )
-
-df_table = df_kat[
+    df_table = df_kat[
     ["Ranking", "Kod Poster", "Jumlah Markah", "Bilangan Juri"]
 ]
-
-st.write(df_kat)
 
 st.dataframe(
     style_table(df_table),
