@@ -55,7 +55,7 @@ def kategori_poster(kod):
     if kod.startswith("PK"):
         return "Inovasi"
 
-    elif kod.startswith("PDD") or kod.startswith("SM"):
+    elif kod.startswith("ED") or kod.startswith("SM"):
         return "Bukan Inovasi"
 
     return "Lain-lain"
